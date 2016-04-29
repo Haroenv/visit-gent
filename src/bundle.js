@@ -7549,17 +7549,115 @@ exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
 },{"./decode":90,"./encode":91}],93:[function(require,module,exports){
+(function(root, factory) {
+  'use strict';
+
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define([], function() {
+      return (root.html = factory());
+    });
+  } else if (typeof exports === 'object') {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like enviroments that support module.exports,
+    // like Node.
+    module.exports = factory();
+  } else {
+    // Browser globals
+    root.html = factory();
+  }
+})(this, function() {
+  // UMD Definition above, do not remove this line
+
+  // To get to know more about the Universal Module Definition
+  // visit: https://github.com/umdjs/umd
+
+  'use strict';
+
+  var util = (function() {
+    // Thanks to Andrea Giammarchi
+    var
+      reEscape = /[&<>'"]/g,
+      reUnescape = /&(?:amp|#38|lt|#60|gt|#62|apos|#39|quot|#34);/g,
+      oEscape = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      },
+      oUnescape = {
+        '&amp;': '&',
+        '&#38;': '&',
+        '&lt;': '<',
+        '&#60;': '<',
+        '&gt;': '>',
+        '&#62;': '>',
+        '&apos;': "'",
+        '&#39;': "'",
+        '&quot;': '"',
+        '&#34;': '"'
+      },
+      fnEscape = function(m) {
+        return oEscape[m];
+      },
+      fnUnescape = function(m) {
+        return oUnescape[m];
+      },
+      replace = String.prototype.replace;
+    return (Object.freeze || Object)({
+      escape: function escape(s) {
+        return replace.call(s, reEscape, fnEscape);
+      },
+      unescape: function unescape(s) {
+        return replace.call(s, reUnescape, fnUnescape);
+      }
+    });
+  }());
+
+  // Tagged template function
+  var html = function(pieces) {
+    var result = pieces[0];
+    var substitutions = [].slice.call(arguments, 1);
+    for (var i = 0; i < substitutions.length; ++i) {
+      result += util.escape(substitutions[i]) + pieces[i + 1];
+    }
+    return result;
+  };
+
+  return html;
+
+});
+
+},{}],94:[function(require,module,exports){
 var formObj = require('form-obj');
+var html = require('./html-escape');
 var algoliasearch = require('algoliasearch');
 var client = algoliasearch('MO3EP03JWU', 'd7afe3e2ea005d92e76df42a6ba4bd69');
 var index = client.initIndex('visitgent');
 
 document.getElementById('search').addEventListener('submit',function(e){
   e.preventDefault();
-  console.log(formObj(this));
-  index.search('Blaarmeersen', function searchDone(err, content) {
-    console.log(err, content);
+  var form = formObj(this);
+  document.getElementById('results').innerHTML = '';
+  index.search(form.search, function searchDone(err, content) {
+    if (err) {
+      console.warn(err);
+    } else {
+      for (var hit in content.hits) {
+        if (content.hits.hasOwnProperty(hit) && content.hits[hit].language === form.language) {
+          console.log(content.hits[hit]);
+          document.getElementById('results').innerHTML +=
+html`
+<article class="result">
+  <h1 class="result--title">${content.hits[hit].title}</h1>
+  <p class="result--summary">${content.hits[hit].summary}</p>
+</article>
+`;
+        }
+      }
+    }
   });
 });
 
-},{"algoliasearch":4,"form-obj":16}]},{},[93]);
+},{"./html-escape":93,"algoliasearch":4,"form-obj":16}]},{},[94]);

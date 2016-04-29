@@ -5,7 +5,8 @@
   "author": "Haroen Viaene",
   "license": "MIT",
   "scripts": {
-    "browserify": "browserify src/main.js -d -p [minifyify --no-map] -o src/bundle.js"
+    "browserify-min": "browserify src/main.js -d -p [minifyify --no-map] -o src/bundle.js",
+    "browserify": "browserify src/main.js -o src/bundle.js"
   },
   "dependencies": {
     "algoliasearch": "^3.13.1",
