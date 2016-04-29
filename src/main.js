@@ -27,14 +27,15 @@ document.querySelector('[name=search]').addEventListener('input',function(){
   <h1 class="result--title">${content.hits[hit].title}</h1>
   <p class="result--summary">${content.hits[hit].summary}</p>
 </div>`;
+          res.datalist = content.hits[hit];
           document.querySelector('.results').appendChild(res);
           res.addEventListener('click',function(){
             var overlay = document.createElement('div');
             overlay.classList.add('overlay');
-            overlay.innerHTML = html`
+            overlay.innerHTML = `
 <section class="overlay--content">
-  <h2 class="overlay--title">${content.hits[hit].title}</h2>
-  <p class="overlay--item">cool content</p>
+  <h2 class="overlay--title overlay--item">${this.datalist.title}</h2>
+  <div class="overlay--item">${this.datalist.description}</div>
 </section>`;
             document.body.insertBefore(overlay,document.querySelector('.header'));
             overlay.addEventListener('click',function(e){
