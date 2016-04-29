@@ -1,6 +1,49 @@
 ---
 # comment for jekyll
 ---
+
+$color-accent-medium: #3B4358;
+$color-light: white;
+
 body {
   font-family: -apple-system, Roboto, sans-serif;
+}
+
+%card {
+  overflow: hidden;
+  border-radius: .2em;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+}
+
+.results {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.result {
+  @extend %card;
+  animation: fadeIn .3s;
+  cursor: pointer;
+  background-color: $color-accent-medium;
+  color: $color-light;
+  margin: .5em;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 15em;
+
+  &--image {
+    width: 100%;
+    height: 10em;
+    object-fit: cover;
+  }
+
+  &--bottom {
+    margin: .3em;
+  }
+}
+
+.\👻 {
+  order: 1; // force last item
+  flex: 1 0 15em; // same as flexbox children
+  margin: 0 .5em; // same as flexbox children (no top/bottom)
 }

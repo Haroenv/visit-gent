@@ -7649,9 +7649,13 @@ document.getElementById('search').addEventListener('submit',function(e){
           console.log(content.hits[hit]);
           document.getElementById('results').innerHTML +=
 html`
+<div class="👻"></div>
 <article class="result">
-  <h1 class="result--title">${content.hits[hit].title}</h1>
-  <p class="result--summary">${content.hits[hit].summary}</p>
+  <img src="${content.hits[hit].images[0]}" alt="${content.hits[hit].title}" class="result--image"/>
+  <div class="result--bottom">
+    <h1 class="result--title">${content.hits[hit].title}</h1>
+    <p class="result--summary">${content.hits[hit].summary}</p>
+  </div>
 </article>
 `;
         }
