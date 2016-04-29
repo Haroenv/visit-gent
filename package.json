@@ -3,5 +3,8 @@
   "version": "0.0.1",
   "description": "Search what you can do in Ghent (powered by visit Ghent and Algolia)",
   "author": "Haroen Viaene",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "algoliasearch": "^3.13.1"
+  }
 }
