@@ -16,7 +16,7 @@ color:
 # location of some files
 css: ['/src/style.css']
 scripts: ['/src/bundle.js']
-favicon: ['../apple-touch-icon.png']
+favicon: ['/../apple-touch-icon.png']
 #configuration
 sass:
   style: compressed

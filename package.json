@@ -8,7 +8,8 @@
     "browserify": "browserify src/main.js -o src/bundle.js"
   },
   "dependencies": {
-    "algoliasearch": "^3.13.1"
+    "algoliasearch": "^3.13.1",
+    "form-obj": "^1.0.2"
   },
   "devDependencies": {
     "browserify": "^13.0.0"
