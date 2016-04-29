@@ -100,9 +100,12 @@ body,html{
     @extend %card;
   }
 
+  &--item {
+    padding: 1em;
+  }
+
   &--title {
     background-color: $color-accent-medium;
     color: $color-light;
-    padding: 1em;
   }
 }

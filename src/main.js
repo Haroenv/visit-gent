@@ -21,15 +21,28 @@ document.querySelector('[name=search]').addEventListener('input',function(){
           console.log(content.hits[hit]);
           var res = document.createElement('article');
           res.classList.add('result');
-          res.innerHTML =
-html`
+          res.innerHTML = html`
 <img src="${content.hits[hit].images[0]}" alt="${content.hits[hit].title}" class="result--image"/>
 <div class="result--bottom">
   <h1 class="result--title">${content.hits[hit].title}</h1>
   <p class="result--summary">${content.hits[hit].summary}</p>
-</div>
-`;
+</div>`;
           document.querySelector('.results').appendChild(res);
+          res.addEventListener('click',function(){
+            var overlay = document.createElement('div');
+            overlay.classList.add('overlay');
+            overlay.innerHTML = html`
+<section class="overlay--content">
+  <h2 class="overlay--title">${content.hits[hit].title}</h2>
+  <p class="overlay--item">cool content</p>
+</section>`;
+            document.body.insertBefore(overlay,document.querySelector('.header'));
+            overlay.addEventListener('click',function(e){
+              if (e.target.classList.contains('overlay')) {
+                e.target.parentNode.removeChild(e.target);
+              };
+            });
+          });
           var flexfix = document.createElement('div');
           flexfix.classList.add('👻');
           document.querySelector('.results').appendChild(flexfix);
