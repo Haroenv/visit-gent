@@ -4,7 +4,13 @@
   "description": "Search what you can do in Ghent (powered by visit Ghent and Algolia)",
   "author": "Haroen Viaene",
   "license": "MIT",
+  "scripts": {
+    "browserify": "browserify src/main.js -o src/bundle.js"
+  },
   "dependencies": {
     "algoliasearch": "^3.13.1"
+  },
+  "devDependencies": {
+    "browserify": "^13.0.0"
   }
 }
