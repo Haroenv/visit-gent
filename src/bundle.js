@@ -7636,8 +7636,12 @@ var algoliasearch = require('algoliasearch');
 var client = algoliasearch('MO3EP03JWU', 'd7afe3e2ea005d92e76df42a6ba4bd69');
 var index = client.initIndex('visitgent');
 
-document.querySelector('[name=search]').addEventListener('input',function(e){
+document.getElementById('search').addEventListener('submit',function(e){
   e.preventDefault();
+});
+
+document.querySelector('[name=search]').addEventListener('input',function(){
+
   var form = formObj(document.getElementById('search'));
   document.getElementById('results').innerHTML = '';
   index.search(form.search, function searchDone(err, content) {
@@ -7647,7 +7651,6 @@ document.querySelector('[name=search]').addEventListener('input',function(e){
       for (var hit in content.hits) {
         if (content.hits.hasOwnProperty(hit) && content.hits[hit].language === form.language) {
           console.log(content.hits[hit]);
-          // document.getElementById('results').innerHTML +=
           var res = document.createElement('article');
           res.classList.add('result');
           res.innerHTML =
