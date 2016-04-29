@@ -2,17 +2,51 @@
 # comment for jekyll
 ---
 
+$color-accent-dark: #282F3F;
 $color-accent-medium: #3B4358;
 $color-light: white;
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
+
 body {
   font-family: -apple-system, Roboto, sans-serif;
+  margin: 0;
+}
+
+body,html{
+  min-height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 %card {
   overflow: hidden;
   border-radius: .2em;
   box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1em;
 }
 
 .results {
@@ -46,4 +80,29 @@ body {
   order: 1; // force last item
   flex: 1 0 15em; // same as flexbox children
   margin: 0 .5em; // same as flexbox children (no top/bottom)
+}
+
+.overlay {
+  animation: fadeIn .3s;
+  top: 0;
+  position: fixed;
+  z-index: 2;
+  background-color: transparentize($color-accent-dark,0.4);
+  backdrop-filter: blur(10px);
+  width: 100%;
+  height: 100%;
+  padding: 1em;
+
+  &--content {
+    background-color: $color-light;
+    max-width: 40rem;
+    margin: 0 auto;
+    @extend %card;
+  }
+
+  &--title {
+    background-color: $color-accent-medium;
+    color: $color-light;
+    padding: 1em;
+  }
 }
