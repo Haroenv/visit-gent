@@ -83,6 +83,11 @@ body,html{
   margin: 1em;
 }
 
+#search {
+  display: flex;
+  align-items: center;
+}
+
 .results {
   display: -webkit-flex;
   display: -ms-flexbox;
