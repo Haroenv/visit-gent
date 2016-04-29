@@ -7668,6 +7668,9 @@ document.querySelector('[name=search]').addEventListener('input',function(){
 <section class="overlay--content">
   <h2 class="overlay--title overlay--item">${this.datalist.title}</h2>
   <div class="overlay--item">${this.datalist.description}</div>
+  <pre>
+  ${JSON.stringify(this.datalist, null, ' ')}
+  </pre>
 </section>`;
             document.body.insertBefore(overlay,document.querySelector('.header'));
             overlay.addEventListener('click',function(e){
