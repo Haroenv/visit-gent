@@ -20,33 +20,39 @@ function searchDone(err, content) {
     var results = document.querySelector('.results');
     results.textContent = '';
 
-    const filteredHits = content.hits.filter((item) => {
-      console.log(item);
-      return item.language === form.language
-    });
+    const filteredHits = content.hits.filter((item) => item.language === form.language);
 
     if (filteredHits.length === 0) {
-      const warning = document.createElement('div');
-      warning.className = 'middle';
-      warning.textContent = 'Sorry 😢, no such thing was found';
-      results.appendChild(warning);
+      addWarning(results);
     } else {
       filteredHits.forEach(function eachHit(hit) {
-        const res = document.createElement('article');
-        res.classList.add('result');
-        res.innerHTML = html`
-  <img src="${hit.images[0]}" alt="${hit.title}" class="result--image"/>
-  <div class="result--bottom">
-    <h1 class="result--title">${hit.title}</h1>
-    <p class="result--summary">${hit.summary}</p>
-  </div>`;
-        res.datalist = hit;
+        const res = createResult(hit);
         results.appendChild(res);
         res.addEventListener('click', showDetails);
         flexfix(results);
       })
     }
   }
+}
+
+function createResult(hit) {
+  const res = document.createElement('article');
+  res.classList.add('result');
+  res.innerHTML = html`
+  <img src="${hit.images[0]}" alt="${hit.title}" class="result--image"/>
+  <div class="result--bottom">
+    <h1 class="result--title">${hit.title}</h1>
+    <p class="result--summary">${hit.summary}</p>
+  </div>`;
+  res.datalist = hit;
+  return res;
+}
+
+function addWarning(node) {
+  const warning = document.createElement('div');
+  warning.className = 'middle';
+  warning.textContent = 'Sorry 😢, no such thing was found';
+  node.appendChild(warning);
 }
 
 function showDetails() {
