@@ -13,28 +13,6 @@ let form = {
   search: ''
 };
 
-function searchDone(err, content) {
-  if (err) {
-    console.warn(err);
-  } else {
-    var results = document.querySelector('.results');
-    results.textContent = '';
-
-    const filteredHits = content.hits.filter((item) => item.language === form.language);
-
-    if (filteredHits.length === 0) {
-      addWarning(results);
-    } else {
-      filteredHits.forEach(function eachHit(hit) {
-        const res = createResult(hit);
-        results.appendChild(res);
-        res.addEventListener('click', showDetails);
-        flexfix(results);
-      })
-    }
-  }
-}
-
 function createResult(hit) {
   const res = document.createElement('article');
   res.classList.add('result');
@@ -86,5 +64,27 @@ document.querySelector('[name=search]').addEventListener('input', () => {
   form = formObj(document.getElementById('search'));
   index.search(form.search, searchDone);
 });
+
+function searchDone(err, content) {
+  if (err) {
+    console.warn(err);
+  } else {
+    var results = document.querySelector('.results');
+    results.textContent = '';
+
+    const filteredHits = content.hits.filter((item) => item.language === form.language);
+
+    if (filteredHits.length === 0) {
+      addWarning(results);
+    } else {
+      filteredHits.forEach(function eachHit(hit) {
+        const res = createResult(hit);
+        results.appendChild(res);
+        res.addEventListener('click', showDetails);
+        flexfix(results);
+      })
+    }
+  }
+}
 
 index.search('', searchDone);
