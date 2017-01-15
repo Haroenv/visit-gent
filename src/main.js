@@ -50,7 +50,7 @@ function showDetails() {
   overlay.addEventListener('click',(e) => {
     if (e.target.classList.contains('overlay')) {
       e.target.parentNode.removeChild(e.target);
-    };
+    }
   });
 }
 
@@ -59,11 +59,6 @@ function flexfix(node) {
   flexfix.classList.add('👻');
   node.appendChild(flexfix);
 }
-
-document.querySelector('[name=search]').addEventListener('input', () => {
-  form = formObj(document.getElementById('search'));
-  index.search(form.search, searchDone);
-});
 
 function searchDone(err, content) {
   if (err) {
@@ -82,9 +77,19 @@ function searchDone(err, content) {
         results.appendChild(res);
         res.addEventListener('click', showDetails);
         flexfix(results);
-      })
+      });
     }
   }
 }
+
+document.querySelector('[name=search]').addEventListener('input', () => {
+  form = formObj(document.getElementById('search'));
+  index.search(form.search, searchDone);
+});
+
+document.querySelector('[name=language]').addEventListener('input', () => {
+  form = formObj(document.getElementById('search'));
+  index.search(form.search, searchDone);
+});
 
 index.search('', searchDone);
