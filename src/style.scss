@@ -46,6 +46,14 @@ body,html{
   height: 100%;
 }
 
+a.img {
+  height: 1em;
+  margin: 0 .2em;
+  svg, img {
+    height: 100%;
+  }
+}
+
 %card {
   overflow: hidden;
   border-radius: .2em;
@@ -95,6 +103,10 @@ body,html{
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
+}
+
+.middle {
+  margin: 1em auto;
 }
 
 .result {

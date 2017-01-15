@@ -1,38 +1,58 @@
-var formObj = require('form-obj');
-var html = require('./html-escape');
-var algoliasearch = require('algoliasearch');
-var client = algoliasearch('MO3EP03JWU', 'd7afe3e2ea005d92e76df42a6ba4bd69');
-var index = client.initIndex('visitgent');
+const formObj = require('form-obj');
+const html = require('./html-escape');
+const algoliasearch = require('algoliasearch');
+const client = algoliasearch('MO3EP03JWU', 'd7afe3e2ea005d92e76df42a6ba4bd69');
+const index = client.initIndex('visitgent');
 
-document.getElementById('search').addEventListener('submit',function(e){
+document.getElementById('search').addEventListener('submit', function(e){
   e.preventDefault();
 });
 
-document.querySelector('[name=search]').addEventListener('input',function(){
+let form = {
+  language: 'en',
+  search: ''
+};
 
-  var form = formObj(document.getElementById('search'));
-  document.getElementById('results').innerHTML = '';
-  index.search(form.search, function searchDone(err, content) {
-    if (err) {
-      console.warn(err);
+function searchDone(err, content) {
+  if (err) {
+    console.warn(err);
+  } else {
+    var results = document.querySelector('.results');
+    results.textContent = '';
+
+    const filteredHits = content.hits.filter((item) => {
+      console.log(item);
+      return item.language === form.language
+    });
+
+    if (filteredHits.length === 0) {
+      const warning = document.createElement('div');
+      warning.className = 'middle';
+      warning.textContent = 'Sorry 😢, no such thing was found';
+      results.appendChild(warning);
     } else {
-      for (var hit in content.hits) {
-        if (content.hits.hasOwnProperty(hit) && content.hits[hit].language === form.language) {
-          console.log(content.hits[hit]);
-          var res = document.createElement('article');
-          res.classList.add('result');
-          res.innerHTML = html`
-<img src="${content.hits[hit].images[0]}" alt="${content.hits[hit].title}" class="result--image"/>
-<div class="result--bottom">
-  <h1 class="result--title">${content.hits[hit].title}</h1>
-  <p class="result--summary">${content.hits[hit].summary}</p>
-</div>`;
-          res.datalist = content.hits[hit];
-          document.querySelector('.results').appendChild(res);
-          res.addEventListener('click',function(){
-            var overlay = document.createElement('div');
-            overlay.classList.add('overlay');
-            overlay.innerHTML = `
+      filteredHits.forEach(function eachHit(hit) {
+        const res = document.createElement('article');
+        res.classList.add('result');
+        res.innerHTML = html`
+  <img src="${hit.images[0]}" alt="${hit.title}" class="result--image"/>
+  <div class="result--bottom">
+    <h1 class="result--title">${hit.title}</h1>
+    <p class="result--summary">${hit.summary}</p>
+  </div>`;
+        res.datalist = hit;
+        results.appendChild(res);
+        res.addEventListener('click', showDetails);
+        flexfix(results);
+      })
+    }
+  }
+}
+
+function showDetails() {
+  const overlay = document.createElement('div');
+  overlay.classList.add('overlay');
+  overlay.innerHTML = `
 <section class="overlay--content">
   <h2 class="overlay--title overlay--item">${this.datalist.title}</h2>
   <div class="overlay--item">${this.datalist.description}</div>
@@ -42,18 +62,23 @@ document.querySelector('[name=search]').addEventListener('input',function(){
   </pre>
   </details>
 </section>`;
-            document.body.insertBefore(overlay,document.querySelector('.header'));
-            overlay.addEventListener('click',function(e){
-              if (e.target.classList.contains('overlay')) {
-                e.target.parentNode.removeChild(e.target);
-              };
-            });
-          });
-          var flexfix = document.createElement('div');
-          flexfix.classList.add('👻');
-          document.querySelector('.results').appendChild(flexfix);
-        }
-      }
-    }
+  document.body.insertBefore(overlay,document.querySelector('.header'));
+  overlay.addEventListener('click',(e) => {
+    if (e.target.classList.contains('overlay')) {
+      e.target.parentNode.removeChild(e.target);
+    };
   });
+}
+
+function flexfix(node) {
+  const flexfix = document.createElement('div');
+  flexfix.classList.add('👻');
+  node.appendChild(flexfix);
+}
+
+document.querySelector('[name=search]').addEventListener('input', () => {
+  form = formObj(document.getElementById('search'));
+  index.search(form.search, searchDone);
 });
+
+index.search('', searchDone);

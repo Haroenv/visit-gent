@@ -13,7 +13,13 @@
     "form-obj": "^1.0.2"
   },
   "devDependencies": {
-    "browserify": "^13.0.0",
-    "minifyify": "^7.3.3"
+    "browserify": "^13.3.0",
+    "es2020": "^1.1.9",
+    "minifyify": "^7.3.4"
+  },
+  "browserify": {
+    "transform": [
+      "es2020"
+    ]
   }
 }
