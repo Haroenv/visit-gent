@@ -5,11 +5,12 @@
   "author": "Haroen Viaene",
   "license": "MIT",
   "scripts": {
-    "browserify-min": "browserify src/main.js -d -p [minifyify --no-map] -o src/bundle.js",
-    "browserify": "browserify src/main.js -o src/bundle.js"
+    "build": "browserify src/main.js -d -p [minifyify --no-map] -o src/bundle.js",
+    "dev": "browserify src/main.js -o src/bundle.js"
   },
   "dependencies": {
     "algoliasearch": "^3.13.1",
+    "escape-html": "^1.0.3",
     "form-obj": "^1.0.2"
   },
   "devDependencies": {
