@@ -4,9 +4,9 @@ const algoliasearch = require('algoliasearch');
 const client = algoliasearch('MO3EP03JWU', 'd7afe3e2ea005d92e76df42a6ba4bd69');
 const index = client.initIndex('visitgent');
 
-document.getElementById('search').addEventListener('submit', function(e) {
-  e.preventDefault();
-});
+document
+  .getElementById('search')
+  .addEventListener('submit', e => e.preventDefault());
 
 let form = {
   language: 'en',
@@ -20,19 +20,23 @@ const fallback =
   '</svg>';
 
 function createResult(hit) {
-  const res = document.createElement('article');
   const needsFallback = !Boolean(hit.images[0]);
+  const fallbackClass = needsFallback ? ' result--image__fallback' : '';
+  const fallbackImage = needsFallback ? fallback : hit.images[0];
+
+  const res = document.createElement('article');
   res.classList.add('result');
   res.innerHTML = html`
   <img
-    src="${needsFallback ? fallback : hit.images[0]}"
+    src="${fallbackImage}"
     alt="${hit.title}"
-    class="${`result--image ${needsFallback ? ' result--image__fallback' : ''}`}"
+    class="${`result--image ${fallbackClass}`}"
   />
   <div class="result--bottom">
     <h1 class="result--title">${hit.title}</h1>
     <p class="result--summary">${hit.summary}</p>
   </div>`;
+  delete hit._highlightResult;
   res.datalist = hit;
   return res;
 }
@@ -51,10 +55,12 @@ function showDetails() {
 <section class="overlay--content">
   <h2 class="overlay--title overlay--item">${this.datalist.title}</h2>
   <div class="overlay--item">${this.datalist.description}</div>
+  <div class="overlay--images">
+    ${this.datalist.images.map(image => `<img src="${image}"/>`).join('')}
+  </div>
   <details class="overlay--item">
-  <pre>
-  ${JSON.stringify(this.datalist, null, ' ')}
-  </pre>
+  <summary>all data</summary>
+  <pre>${JSON.stringify(this.datalist, null, 2)}</pre>
   </details>
 </section>`;
   document.body.insertBefore(overlay, document.querySelector('.header'));
